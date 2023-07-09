@@ -1,3 +1,7 @@
+## tmux
+
+#### 命令
+
 进入 `tmux` 
 ```
 tmux                           创建默认名字的会话
@@ -17,4 +21,5 @@ tmux kill-session -a -t s1　　关闭除s1外的所有会话
 tmux kill-server　　          关闭所有会话
 ```
 
+#### 快捷键
 ![](image/2023-06-10-15-00-02.png)
