@@ -1,0 +1,3 @@
+# forLinux
+
+explore Linux.
