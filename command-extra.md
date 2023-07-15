@@ -8,7 +8,8 @@
 - `shellcheck some.sh`
 - `env` 命令或 `printenv` 命令，可以显示所有环境变量
 - `set` 命令可以显示所有变量（包括环境变量和自定义变量），以及所有的 Bash 函数
-- `<(someComend)` 会执行 `someComend` 并将结果输出到一个临时文件中，并将 `<( - CMD )` 替换成临时文件名
+- `<(someComend)` 会执行 `someComend` 并将结果输出到一个临时文件中，`<(someComend)` 拓展成这个临时文件的文件名
+  - `diff <(ls foo) <(ls bar)` 例子
 
 - 
 - 敲 `^R` 后您可以输入子串来进行匹配，查找历史命令行

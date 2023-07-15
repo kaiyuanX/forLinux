@@ -40,6 +40,7 @@
   - [sort](#sort)
   - [uniq](#uniq)
   - [xdg-open](#xdg-open)
+  - [basename](#basename)
   - [read 命令](#read-命令)
       - [用法](#用法)
       - [参数](#参数)
@@ -463,6 +464,13 @@ $ wget -O newname.md https://github.com/LCTT/TranslateProject/blob/master/README
 ## xdg-open
 
 opens a file or URL in the user's preferred application
+
+## basename
+
+- 从文件的完整路径获取文件名
+- 用于删除文件的扩展名
+
+[basename命令删除扩展名](https://www.myfreax.com/basename-command-in-linux/)
 
 ## read 命令
 
