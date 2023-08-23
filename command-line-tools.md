@@ -15,14 +15,23 @@
   - [cp](#cp)
   - [mv](#mv)
   - [touch](#touch)
-  - [vim](#vim)
-- [打印阅读](#打印阅读)
+- [输入输出控制](#输入输出控制)
   - [重定向](#重定向)
-  - [cat](#cat)
+  - [管道](#管道)
+  - [xargs](#xargs)
+  - [tee](#tee)
+- [文本处理](#文本处理)
+  - [vim](#vim)
+  - [grep](#grep)
+  - [sed](#sed)
+  - [awk](#awk)
+  - [wc](#wc)
+  - [sort](#sort)
+  - [uniq](#uniq)
+  - [bc](#bc)
+- [文件检索](#文件检索)
   - [more](#more)
   - [less](#less)
-- [搜索匹配](#搜索匹配)
-  - [grep](#grep)
   - [whereis](#whereis)
   - [find](#find)
 - [系统网络](#系统网络)
@@ -37,8 +46,6 @@
 - [其他](#其他)
   - [wget](#wget)
   - [tmux](#tmux)
-  - [sort](#sort)
-  - [uniq](#uniq)
   - [xdg-open](#xdg-open)
   - [basename](#basename)
   - [read 命令](#read-命令)
@@ -243,12 +250,8 @@ $ mv -i source folder      # 在移动时，若文件已存在则提示 **是否
 $ touch NEWFILE
 ```
 
-## vim
 
-详见 [tools-vim-ms](tools-vim-ms.md)
-
-
-# 打印阅读
+# 输入输出控制
 
 ## 重定向
 
@@ -268,14 +271,119 @@ ls: b.txt: No such file or directory
 $ cat file1.txt file2.txt &> out.txt
 ```
 
-## cat
+## 管道
 
-`cat` 用于输出文件内容到 Terminal
+`|`
+
+## xargs
+
+把 input 转化为 initial-arguments 传给 command
+
+`xargs [options] [command [initial-arguments]]`
+
+## tee
+
+read from input and write to standard output and files
+
+# 文本处理
+
+## vim
+
+详见 [tools-vim-ms](tools-vim-ms.md)
+
+## grep
+
+Global search Regular Expression and Print out the line
+
+可以把 `grep` 理解成字符查找工具
+
+支持正则表达式
 
 ```
-$ cat /etc/locale.gen     # 输出 locale.gen 的内容 
-$ cat -n /etc/locale.gen  # 输出 locale.gen 的内容并显示行号
+$ grep PATTERN filename      # 返回所有含有 PATTERN 的行
+$ grep zh_CN /etc/locale.gen # 返回所有含 zh_CN 的行
 ```
+
+[基本参数](https://www.zsythink.net/archives/1733)
+
+## sed
+
+专注于处理行
+
+```
+# 对每行进行匹配替换
+# g 表每行的全部匹配都替换
+
+command | sed 's/<oldWord>/<newWord>/g'  
+```
+
+## awk
+
+专注于处理列
+
+- `$0` 表示整行的内容
+- `$1` 到 `$n` 为一行中的 n 个区域
+
+区域的分割基于 `awk` 的域分隔符（默认是空格，可以通过 `-F` 来修改）
+
+例子：让我们统计一下所有以 `c` 开头，以 `e` 结尾，并且仅尝试过一次登录的用户
+
+输入
+
+```bash
+12 username1
+45 xky
+1 fuck
+1 jj
+3 uu
+```
+
+```bash
+# 通过管道传给 awk
+| awk '$1 == 1 && $2 ~ /^c[^ ]*e$/ { print $2 }' | wc -l
+```
+
+其中 `$1 == 1 && $2 ~ /^c[^ ]*e$/` 为匹配要求
+
+- 第一部分需要等于 1，
+- 第二部分必须满足给定的一个正则表达式
+
+代码块 `{ print $2 }`
+
+- 表示打印第二部分
+
+然后我们使用 `wc -l` 统计输出结果的行数
+
+## wc
+
+word count
+
+## sort
+
+给输入排序
+
+```bash
+# 使用SEP作为列的分隔符
+-t SEP
+
+# k 后面这一串给出排序标准的位置和类型
+-k FStart.CStart Modifier,FEnd.CEnd Modifier
+```
+
+[Linux sort 命令详解](https://wangchujiang.com/linux-command/c/sort.html)
+
+## uniq
+
+删除输入中重复的行
+
+`-c` 额外打印出重复行的数量
+
+## bc 
+
+An arbitrary precision calculator
+
+
+# 文件检索
 
 ## more
 
@@ -306,24 +414,6 @@ $ more -N file_name               # 默认满屏，-N 限制一屏行数
 $ less /etc/locale.gen
 $ less +100 /etc/locale.gen
 ```
-
-
-# 搜索匹配
-
-## grep
-
-Global search Regular Expression and Print out the line
-
-可以把 `grep` 理解成字符查找工具
-
-支持正则表达式
-
-```
-$ grep PATTERN filename      # 返回所有含有 PATTERN 的行
-$ grep zh_CN /etc/locale.gen # 返回所有含 zh_CN 的行
-```
-
-[基本参数](https://www.zsythink.net/archives/1733)
 
 ## whereis
 
@@ -452,14 +542,6 @@ $ wget -O newname.md https://github.com/LCTT/TranslateProject/blob/master/README
 ## tmux
 
 见 [tools-tmux](tools-tmux.md)
-
-## sort
-
-给输入排序
-
-## uniq
-
-删除输入中重复的行
 
 ## xdg-open
 
